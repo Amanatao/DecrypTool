@@ -1,8 +1,5 @@
 import binascii
-<<<<<<< HEAD
-=======
 
->>>>>>> 037f54f8b02e15671e107519d9bf364b30869dfe
 s = input('Veuillez renseigner un message crypte : ')
 print('Le message a decrypter : ', s)
 
@@ -22,7 +19,6 @@ def bin(n):
     while n != 0: n, res = n >> 1, repr(n & 1) + res
     return res
 
->>>>>>> 037f54f8b02e15671e107519d9bf364b30869dfe
 binaire = bin(intS)
 print('En binaire : ', binaire)
 
@@ -47,7 +43,6 @@ print('[/] Conversion en Hexa \n')
 hexa = hex(s)
 print('En hexa : ', hexa, '\n')
 
-<<<<<<< HEAD
 
 #Chiffrement par decalage 
 
@@ -68,10 +63,6 @@ for pas in range (25) :
         phrase_codee.append("".join(liste_mot))
     print(pas," ".join(phrase_codee))
 
-
-
-=======
->>>>>>> 037f54f8b02e15671e107519d9bf364b30869dfe
 
 """
 Toutes les possibilités : 
