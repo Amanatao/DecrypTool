@@ -12,12 +12,6 @@ intS= int(s)
 # ~~ Conversion en binaire
 print('[/] Conversion en Binaire \n' )
 
-def bin(n):
-    if n == 0: return '0'
-    res = ''
-    while n != 0: n, res = n >> 1, repr(n & 1) + res
-    return res
-
 binaire = bin(intS)
 print('En binaire : ', binaire)
 
