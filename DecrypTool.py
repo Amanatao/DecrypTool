@@ -11,8 +11,7 @@ intS= int(s)
 
 # ~~ Conversion en binaire
 print('[/] Conversion en Binaire \n' )
-<<<<<<< HEAD
-=======
+
 def bin(n):
     if n == 0: return '0'
     res = ''
@@ -63,40 +62,3 @@ for pas in range (25) :
         phrase_codee.append("".join(liste_mot))
     print(pas," ".join(phrase_codee))
     phrase_codee = []
-
-
-"""
-Toutes les possibilités : 
-
-Transformer en Binaire :
-- C'est déjà du binaire -> On retourne la même chose
-- C'est du decimal -> bin()
-- C'est de l'octal -> Split chaque nombre et prendre le code binaire de chacun
-- C'est de l'hexa -> binascii
-
-Transformer en decimal :
-- C'est du binaire -> int(x,2)
-- C'est de l'octal -> int(x,8)
-- C'est déjà du decimal -> (x,10)
-- C'est de l'hexa -> int(x,16)
-
-Transformer en hexa : 
-- C'est du binaire -> binascii
-<<<<<<< HEAD
-- C'est de l'octal -> On le convertit en binaire et ensuite binascii
-- C'est du decimal -> hex()
-- C'est de l'hexa -> On retourne la même chose
-
-Decallage cesar
-On defini un tableau avec pour chaque indice une lettre de l'alphabet
-Ensuite on divise la chaine de caractères en un tableau avec une case pour chaque lettre.
-et ensuite on echange.
-=======
->>>>>>> 037f54f8b02e15671e107519d9bf364b30869dfe
-"""
-
-
-    
-
-    
-
