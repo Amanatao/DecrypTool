@@ -62,6 +62,7 @@ for pas in range (25) :
             liste_mot.append(liste_lettre[i+pas])
         phrase_codee.append("".join(liste_mot))
     print(pas," ".join(phrase_codee))
+    phrase_codee = []
 
 
 """
