@@ -1,58 +1,172 @@
-import binascii
 
-s = input('Veuillez renseigner un message crypte : ')
-print('Le message a decrypter : ', s)
+import argparse
 
-# ~~ Convertit le string en int
-intS= int(s)
+def main() :
+    parser = argparse.ArgumentParser(description=("Decrypt Everything"))
+
+    parser.add_argument('-c','--cesar',nargs='1', help='The sentence to decipher', required=False)
+
+    parser.add_argument('-t', '--transBase', nagrgs='1', help='What do you want to move to another base', required=False)
+
+    parser.add_argument('-x','--xor', nargs='1', help='What do you want to "unXOR"', required=False)
+
+    parser.add_argument('--rot13', nargs='1', help='The thing to be transforme by ROT13', required=False)
+
+    args = parser.parse_args()
+    args = vars(args)
+
+    cesar = args[cesar]
+    transBase = args[transBase]
+    xor = args[xor]
+    rot13 = args[rot13]
+
+    if cesar != "" :
+        cesar(cesar)
+    
+    if transBase != "" :
+        transBase(transBase)
+    
+    if xor != "" :
+        xor(xor)
+    
+    if rot13 != "" :
+        rot13(rot13)
+
+def transBase(transBase) :
+    s = transBase
+    print('Le message a convertir : ', s)
+    print('Le 0 en resultat signifie soit une valeur impossible, soit la valeur 0','\n')
+
+    #Essaye de convertir en entier
+    try :
+        intS = int(s,10)
+    except : 
+        intS = 0
+
+    print('intS = ' ,intS)
+
+    #Essaye de convertir en octal
+    try :
+        octToDecimal = int(s,8)
+        octS = oct(octToDecimal)
+    except :
+        octS = oct(0)
+    print('octS = ',octS)
+
+    #Essaye de convertir en biniare
+    try : 
+        binToIntS = int(s,2)
+        binS = bin(binToIntS)
+    except :
+        binS = bin(0)
+    print('binS = ',binS)
+
+    #Essaye de convertir en hexa
+    try : 
+        hexToIntS = int(s,16)
+        hexS = hex(hexToIntS)
+    except :
+        hexS = hex(0)
+    print('hexS = ', hexS)
 
 
-#Les bases supportees sont : 2 (binaire) / 8 (octal) / 10 (decimal) / 16 (hexa)
+    #Si le message de base est en binaire 
+    print('[~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]','\n')
+    print('Si c\'etait du binaire : ', '\n')
 
-# ~~ Conversion en binaire
-print('[/] Conversion en Binaire \n' )
+    print('En binaire : ','\t', binS, '\n')
+    binToDecimal = int(binS,2)
 
-binaire = bin(intS)
-print('En binaire : ', binaire)
+    binToOctal = oct(binToDecimal)
+    print('En octal : ','\t', binToOctal, '\n')
 
-# ~~ Conversion en octal
-print('[/] Conversion en Octal \n')
-octal = oct(intS)
-print('En octal : ' , octal)
+    binToDecimal = int(binS,2)
+    print('En decimal : ' ,'\t', binToDecimal ,'\n')
 
-# ~~ Conversion en decimal
-print('[/] Conversion en Decimal \n')
-decimalH = int(s,16)
-print('Si le message etait en hexa : ' , decimalH ,'\n')
+    print('En hexa : ','\t', hex(binToDecimal),'\n')
 
-decimalBin = int(s,2)
-print('Si le message etait en binaire : ' , decimalBin ,'\n')
+    #Si le message de base etait en decimal
+    print('[~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]', '\n')
+    print('Si le message etait en decimal')
 
-decimalOct = int(s,8)
-print('Si le message etait en octal : ', decimalOct ,'\n')
+    decimalToBin = bin(intS)
+    print('En binaire : ','\t',decimalToBin,'\n')
 
-# ~~ Conversion en hexa
-print('[/] Conversion en Hexa \n')
-hexa = hex(s)
-print('En hexa : ', hexa, '\n')
+    print('En octal : ','\t', oct(intS),'\n')
+
+    print('En decimal : ','\t', intS,'\n')
+
+    print('En hexa : ','\t', hex(intS))
+
+    print('[~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]', '\n')
+    print('Si le message etait en hexadecimal')
+
+    hexaToDecimal = int(hexS, 16)
+
+    hexaToBin = int(hexS.lower(), 16)
+    hexaToBin = bin(hexaToBin)
+    print('En binaire : ','\t', hexaToBin, '\n')
+
+    hexaToOct = oct(hexaToDecimal)
+    print('En octal : ','\t', hexaToOct,'\n')
+
+    print('En decimal : ','\t', hexaToDecimal,'\n')
+
+    print('En hexa : ','\t', hexS, '\n')
+
+    print('[~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]', '\n')
+    print('Si le message etait en octal','\n')
+
+    octalToInt = int(octS,8)
+
+    octalToBin = bin(octalToInt)
+    print('En binaire : ','\t',octalToBin,'\n')
+
+    print('En octal : ','\t',octS,'\n')
+
+    print('En decimal : ','\t', octalToInt)
+
+    octalToHex = hex(octalToInt)
+    print('En hexa : ','\t', octalToHex, '\n')
+    print('[~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]')
 
 
 #Chiffrement par decalage 
+def cesar(cesar) :
 
-liste_lettre=["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]
+    liste_lettre=["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]
 
-phrase=(input("Votre phrase : ")).lower()
+    phrase=cesar
 
-phrase_codee=[]
-phrase=phrase.split()
-for pas in range (25) :
-    for mot in phrase:
-        liste_mot=[]
-        for lettre in mot:
-            i=liste_lettre.index(lettre)
-            if i+pas>25:
-                i-=26
-            liste_mot.append(liste_lettre[i+pas])
-        phrase_codee.append("".join(liste_mot))
-    print(pas," ".join(phrase_codee))
-    phrase_codee = []
+    phrase_codee=[]
+    phrase=phrase.split()
+    for pas in range (26) :
+        for mot in phrase:
+            liste_mot=[]
+            for lettre in mot:
+                i=liste_lettre.index(lettre)
+                if i+pas>25:
+                    i-=26
+                liste_mot.append(liste_lettre[i+pas])
+            phrase_codee.append("".join(liste_mot))
+        
+        print(pas," ".join(phrase_codee))
+        phrase_codee = []
+
+
+def xor(xor) :
+    print('*xor code ')
+
+def rot13(rot13) :
+    print('*Rot13 code*')
+
+
+if __name__ == '__main__' :
+    main()
+
+"""
+To do :
+ROT 13
+XOR
+ASCII
+"""
