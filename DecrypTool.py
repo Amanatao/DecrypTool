@@ -1,36 +1,43 @@
-
 import argparse
 
 def main() :
+    #Variables
+    toCesar = ""
+    toTransBase = ""
+    toXor = ""
+    toRot13 = ""
+    
     parser = argparse.ArgumentParser(description=("Decrypt Everything"))
 
-    parser.add_argument('-c','--cesar',nargs='1', help='The sentence to decipher', required=False)
+    parser.add_argument('-c','--cesar',nargs= 1 , help='The sentence to decipher', required=False)
 
-    parser.add_argument('-t', '--transBase', nagrgs='1', help='What do you want to move to another base', required=False)
+    parser.add_argument('-t', '--transBase', nargs=1, help='What do you want to move to another base', required=False)
 
-    parser.add_argument('-x','--xor', nargs='1', help='What do you want to "unXOR"', required=False)
+    parser.add_argument('-x','--xor', nargs=1, help='What do you want to "unXOR"', required=False)
 
-    parser.add_argument('--rot13', nargs='1', help='The thing to be transforme by ROT13', required=False)
+    parser.add_argument('--rot13', nargs=1, help='The thing to be transforme by ROT13', required=False)
 
     args = parser.parse_args()
     args = vars(args)
 
-    cesar = args[cesar]
-    transBase = args[transBase]
-    xor = args[xor]
-    rot13 = args[rot13]
+    toCesar = args[cesar]
+    toTransBase = args[transBase]
+    toXor = args[xor]
+    toRot13 = args[rot13]
 
-    if cesar != "" :
-        cesar(cesar)
+    banner()
     
-    if transBase != "" :
-        transBase(transBase)
+    if toCesar != "" :
+        cesar(toCesar)
     
-    if xor != "" :
-        xor(xor)
+    if toTransBase != "" :
+        transBase(toTransBase)
     
-    if rot13 != "" :
-        rot13(rot13)
+    if toXor != "" :
+        xor(toXor)
+    
+    if toRot13 != "" :
+        rot13(toRot13)
 
 def transBase(transBase) :
     s = transBase
@@ -160,7 +167,16 @@ def xor(xor) :
 def rot13(rot13) :
     print('*Rot13 code*')
 
-
+def banner() :
+    print("""
+  ____                           _____           _ 
+ |  _ \  ___  ___ _ __ _   _ _ _|_   _|__   ___ | |
+ | | | |/ _ \/ __| '__| | | | '_ \| |/ _ \ / _ \| |
+ | |_| |  __/ (__| |  | |_| | |_) | | (_) | (_) | |
+ |____/ \___|\___|_|   \__, | .__/|_|\___/ \___/|_|
+                       |___/|_|                    
+    """)
+    print('\n',"Welcome at DecrypTool")
 if __name__ == '__main__' :
     main()
 
