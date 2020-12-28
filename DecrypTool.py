@@ -6,7 +6,7 @@ def main() :
     toTransBase = ""
     toXor = ""
     toRot13 = ""
-    
+
     parser = argparse.ArgumentParser(description=("Decrypt Everything"))
 
     parser.add_argument('-c','--cesar',nargs= 1 , help='The sentence to decipher', required=False)
@@ -20,10 +20,10 @@ def main() :
     args = parser.parse_args()
     args = vars(args)
 
-    toCesar = args[cesar]
-    toTransBase = args[transBase]
-    toXor = args[xor]
-    toRot13 = args[rot13]
+    toCesar = args["cesar"]
+    toTransBase = args["transBase"]
+    toXor = args["xor"]
+    toRot13 = args["rot13"]
 
     banner()
     
@@ -162,7 +162,28 @@ def cesar(cesar) :
 
 
 def xor(xor) :
-    print('*xor code ')
+    ciphered = ""
+    with open(xor, 'rb') as f:
+        ciphered = f.read()
+
+    key = []
+    cleartext = """<!DOCTYPE html>
+    <html>
+    <head>"""
+
+    j = 0
+    for letter, c in zip(ciphered[:len(cleartext)+1], cleartext):
+        for i in range(256):
+            if letter ^ i == ord(c):
+                key.append(i)
+                print(f"{letter} ^ {i} == {c}")
+            j+=1
+
+    k = ""
+    for i in key:
+        k+=chr(i)
+        
+    print(k)
 
 def rot13(rot13) :
     print('*Rot13 code*')
@@ -176,7 +197,9 @@ def banner() :
  |____/ \___|\___|_|   \__, | .__/|_|\___/ \___/|_|
                        |___/|_|                    
     """)
-    print('\n',"Welcome at DecrypTool")
+    print('\n',"Welcome to DecrypTool")
+
+
 if __name__ == '__main__' :
     main()
 
