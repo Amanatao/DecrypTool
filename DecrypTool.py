@@ -7,40 +7,47 @@ def main() :
     toXor = ""
     toRot13 = ""
 
-    parser = argparse.ArgumentParser(description=("Decrypt Everything"))
+    parser = argparse.ArgumentParser(description=("Decrypt Everything !"))
 
     parser.add_argument('-c','--cesar',nargs= 1 , help='The sentence to decipher', required=False)
 
-    parser.add_argument('-t', '--transBase', nargs=1, help='What do you want to move to another base', required=False)
+    parser.add_argument('-t', '--transBase', nargs=1, help='The "move to another base" mode ', required=False)
 
-    parser.add_argument('-x','--xor', nargs=1, help='What do you want to "unXOR"', required=False)
+    parser.add_argument('-x','--xor', nargs=1, help='The unXOR mode', required=False)
 
-    parser.add_argument('--rot13', nargs=1, help='The thing to be transforme by ROT13', required=False)
+    parser.add_argument('--rot13', nargs=1, help='The unROT13 mode ', required=False)
 
     args = parser.parse_args()
     args = vars(args)
 
-    toCesar = args["cesar"]
-    toTransBase = args["transBase"]
-    toXor = args["xor"]
-    toRot13 = args["rot13"]
+    toCesar = []
+    toTransBase = []
+    toXor=[]
+    toRot13=[]
 
+    toCesar.append(args["cesar"])
+    toTransBase.append(args["transBase"])
+    toXor.append(args["xor"])
+    toRot13.append(args["rot13"])
     banner()
     
-    if toCesar != "" :
+    if toCesar[0] != "" :
         cesar(toCesar)
     
-    if toTransBase != "" :
+    if toTransBase[0] != "" :
         transBase(toTransBase)
     
-    if toXor != "" :
+    if toXor[0] != ""  :
         xor(toXor)
     
-    if toRot13 != "" :
+    if toRot13[0] != "" :
         rot13(toRot13)
 
 def transBase(transBase) :
-    s = transBase
+
+    if transBase != None:
+        s = transBase[0]
+    else : s =0 
     print('Le message a convertir : ', s)
     print('Le 0 en resultat signifie soit une valeur impossible, soit la valeur 0','\n')
 
@@ -141,11 +148,13 @@ def transBase(transBase) :
 #Chiffrement par decalage 
 def cesar(cesar) :
 
+    print("The 26 possibilities :")
     liste_lettre=["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]
 
-    phrase=cesar
+    phrase=cesar[0][0]
+    print(phrase)
 
-    phrase_codee=[]
+    phrase_decodee=[]
     phrase=phrase.split()
     for pas in range (26) :
         for mot in phrase:
@@ -155,21 +164,20 @@ def cesar(cesar) :
                 if i+pas>25:
                     i-=26
                 liste_mot.append(liste_lettre[i+pas])
-            phrase_codee.append("".join(liste_mot))
-        
-        print(pas," ".join(phrase_codee))
-        phrase_codee = []
-
+            phrase_decodee.append("".join(liste_mot))
+        print(pas,"\t|"," ".join(phrase_decodee),"|")
+        phrase_decodee = []
 
 def xor(xor) :
-    ciphered = ""
+    print('*unXOR code*')
+    """ciphered = ""
     with open(xor, 'rb') as f:
         ciphered = f.read()
 
     key = []
-    cleartext = """<!DOCTYPE html>
+    cleartext = <!DOCTYPE html>
     <html>
-    <head>"""
+    <head>
 
     j = 0
     for letter, c in zip(ciphered[:len(cleartext)+1], cleartext):
@@ -183,7 +191,7 @@ def xor(xor) :
     for i in key:
         k+=chr(i)
         
-    print(k)
+    print(k)"""
 
 def rot13(rot13) :
     print('*Rot13 code*')
@@ -197,7 +205,7 @@ def banner() :
  |____/ \___|\___|_|   \__, | .__/|_|\___/ \___/|_|
                        |___/|_|                    
     """)
-    print('\n',"Welcome to DecrypTool")
+    print('\n\t\t',"Welcome to DecrypTool\n\n\n")
 
 
 if __name__ == '__main__' :
