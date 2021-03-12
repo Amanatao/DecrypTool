@@ -7,16 +7,16 @@ Base64
 
 You can also change the base of a number / values
 Bases available : 
-Base 2 / Binary
-Base 8 / Octal
-Base 10 / Decimal
-Base 16 / Hexadecimal
+\nBase 2 / Binary
+\nBase 8 / Octal
+\nBase 10 / Decimal
+\nBase 16 / Hexadecimal
 
 
 Upcomming : 
-Cesar with caps
-Xor
-RSA (it could be long to calculate)
+\nCesar with caps
+\nXor
+\nRSA (it could be long to calculate)
 
 
  
