@@ -12,7 +12,19 @@ def main() :
 
     parser.add_argument('-x','--xor', nargs=1, help='The unXOR mode', required=False)
 
-    parser.add_argument('-b','--base64',nargs=1,help='The sentence the decrypt from base64', required=False)
+    parser.add_argument('--base64',nargs=1,help='The sentence to decrypt from base64', required=False)
+
+    parser.add_argument('--toBase64',nargs=1,help='The sentence to encrypt in base64', required=False)
+
+    parser.add_argument("--rsa", help="Activates the RSA mode")
+
+    parser.add_argument("-n", help="Specify the modulus. format : int or 0xhex")
+
+    parser.add_argument("-p", help="Specify the first prime number. format : int or 0xhex")
+
+    parser.add_argument("-q", help="Specify the second prime number. format : int or 0xhex")
+
+    parser.add_argument("-e", help="Specify the public exponent. format : int or 0xhex")
 
     args = parser.parse_args()
     args = vars(args)
@@ -20,7 +32,11 @@ def main() :
     toCesar = args["cesar"]
     toTransBase = args["transBase"]
     toXor = args["xor"]
-    toBase64 = args["base64"]
+    fromBase64 = args["base64"]
+    toBase64 = args["toBase64"]
+
+    rsa = args["rsa"]
+
     banner()
     
     if toCesar !=  None:
@@ -32,8 +48,29 @@ def main() :
     if toXor != None :
         xor(toXor)
 
+    if fromBase64 != None:
+        unBase64(fromBase64)
+
     if toBase64 != None:
-        unBase64(toBase64)
+        codeInBase64(toBase64)
+
+    if rsa != None:
+        p = args["p"]
+        q = args["q"]
+        n = args["n"]
+        e = args["e"]
+
+        if e is not None :
+            if p is not None and q is not None:
+                toRSA(rsa,e,p*q)
+            elif n is not None :
+                toRSA(rsa,e,n)
+            else:
+                print("You have to enter a modulus or a couple of prim numbers")
+        else:
+            print("You have to enter an exponent to make the RSA encryption")
+       
+        
 
 def transBase(transBase) :
 
@@ -164,8 +201,29 @@ def cesar(cesar) :
 def xor(xor) :
     print('*unXOR code*')
 
-def unBase64(base64):
-    print(base64.b64decode(base64))
+def unBase64(cypher):
+    print(base64.b64decode(cypher[0]+"======"))
+
+def codeInBase64(data):
+    message = data[0]
+    message_bytes = message.encode('ascii')
+    base64_bytes = base64.b64encode(message_bytes)
+    print(base64_bytes)
+
+
+
+def toRSA(message,theModulus,theE):
+    toCypher = message[0]
+    modulus = theModulus[0]
+    e = theE[0]
+
+    cypher = pow(toCypher,e,modulus)
+    print(cypher)
+
+
+
+
+
 
 def banner() :
     print("""
