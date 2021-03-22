@@ -1,11 +1,8 @@
 import argparse
+import base64
 
 def main() :
-    #Variables
-    toCesar = ""
-    toTransBase = ""
-    toXor = ""
-    toRot13 = ""
+
 
     parser = argparse.ArgumentParser(description=("Decrypt Everything !"))
 
@@ -15,33 +12,28 @@ def main() :
 
     parser.add_argument('-x','--xor', nargs=1, help='The unXOR mode', required=False)
 
-    parser.add_argument('--rot13', nargs=1, help='The unROT13 mode ', required=False)
+    parser.add_argument('-b','--base64',nargs=1,help='The sentence the decrypt from base64', required=False)
 
     args = parser.parse_args()
     args = vars(args)
 
-    toCesar = []
-    toTransBase = []
-    toXor=[]
-    toRot13=[]
-
-    toCesar.append(args["cesar"])
-    toTransBase.append(args["transBase"])
-    toXor.append(args["xor"])
-    toRot13.append(args["rot13"])
+    toCesar = args["cesar"]
+    toTransBase = args["transBase"]
+    toXor = args["xor"]
+    toBase64 = args["base64"]
     banner()
     
-    if toCesar[0] != "" :
+    if toCesar !=  None:
         cesar(toCesar)
     
-    if toTransBase[0] != "" :
+    if toTransBase != None :
         transBase(toTransBase)
     
-    if toXor[0] != ""  :
+    if toXor != None :
         xor(toXor)
-    
-    if toRot13[0] != "" :
-        rot13(toRot13)
+
+    if toBase64 != None:
+        unBase64(toBase64)
 
 def transBase(transBase) :
 
@@ -151,10 +143,11 @@ def cesar(cesar) :
     print("The 26 possibilities :")
     liste_lettre=["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]
 
-    phrase=cesar[0][0]
+    phrase=cesar[0]
     print(phrase)
 
     phrase_decodee=[]
+    phrase = phrase.lower()
     phrase=phrase.split()
     for pas in range (26) :
         for mot in phrase:
@@ -170,31 +163,9 @@ def cesar(cesar) :
 
 def xor(xor) :
     print('*unXOR code*')
-    """ciphered = ""
-    with open(xor, 'rb') as f:
-        ciphered = f.read()
 
-    key = []
-    cleartext = <!DOCTYPE html>
-    <html>
-    <head>
-
-    j = 0
-    for letter, c in zip(ciphered[:len(cleartext)+1], cleartext):
-        for i in range(256):
-            if letter ^ i == ord(c):
-                key.append(i)
-                print(f"{letter} ^ {i} == {c}")
-            j+=1
-
-    k = ""
-    for i in key:
-        k+=chr(i)
-        
-    print(k)"""
-
-def rot13(rot13) :
-    print('*Rot13 code*')
+def unBase64(base64):
+    print(base64.b64decode(base64))
 
 def banner() :
     print("""
