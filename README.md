@@ -3,7 +3,7 @@ A tool which decrypt everything
 You can actually decrypt :
 Cesar's code (No caps at the moment, will come)
 Base64
-
+You can also encrypt in RSA
 
 You can also change the base of a number / values
 Bases available : 
@@ -16,7 +16,7 @@ Base 16 / Hexadecimal
 Upcomming : 
 Cesar with caps
 Xor
-RSA (it could be long to calculate)
+RSA decryption (it could be long to calculate)
 
 
  
