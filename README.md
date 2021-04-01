@@ -14,7 +14,7 @@ This programm has been made to make the cryptography easier for beginers. It as 
 **Make your ctf faster**<br>
 I will regulary add new scripts and types of encryption / decryption.
 Actually, DecrypTool has :
-* Cesear bruteforce
+* Cesar bruteforce
 * Base transposition : 
     * Binary
     * Octal
@@ -34,7 +34,7 @@ I used python to make this tool, you will need the following extensions :
 
 # Setup
 ## To run this script :
-`git clone https://github.com/Amanatao/DecrypTool`|<br>
+`git clone https://github.com/Amanatao/DecrypTool`<br>
 `pip3 install -r "requierment.txt"`<br>
 `python3 DecrypTool.py`
 
