@@ -1,5 +1,6 @@
 import argparse
 import base64
+import os
 
 def main() :
 
@@ -17,26 +18,17 @@ def main() :
 
     #Args for Base64
     parser.add_argument('--base64',nargs=1,help='The sentence to decrypt from base64', required=False)
-
     parser.add_argument('--toBase64',nargs=1,help='The sentence to encrypt in base64', required=False)
 
     #Args fir RSA
     parser.add_argument("--toRsa", help="Activates the RSA mode")
-
     parser.add_argument("-n", help="Specify the modulus. format : int or 0xhex")
-
     parser.add_argument("-p", help="Specify the first prime number. format : int or 0xhex")
-
     parser.add_argument("-q", help="Specify the second prime number. format : int or 0xhex")
-
     parser.add_argument("-e", help="Specify the public exponent. format : int or 0xhex")
-
-
-    #Args for Vigenere
-    parser.add_argument("--vigenereCode", help="The message to cipher in Vigenere")
-    parser.add_argument("--vigenereDecode", help="The message to decrypt from Vigenere")
-    parser.add_argument("--vigenereKey", help="The key if you have it")
-    
+    parser.add_argument("--privateKey", help="The private key in a file")
+    parser.add_argument("--RsaInFile", help="The flag encrypted in a file")
+    parser.add_argument("--dump", help="Dump the private key")
 
 
     args = parser.parse_args()
@@ -50,11 +42,7 @@ def main() :
 
     toRsa = args["toRsa"]
 
-    toVigenere = args["vigenereCode"]
-    fromVigenere = args["vigenereDecode"]
-
     banner()
-    
     if toCesar !=  None:
         cesar(toCesar)
     
@@ -75,6 +63,7 @@ def main() :
         q = args["q"]
         n = args["n"]
         e = args["e"]
+        
 
         if e is not None :
             if p is not None and q is not None:
@@ -85,20 +74,34 @@ def main() :
                 print("You have to enter a modulus or a couple of prim numbers")
         else:
             print("You have to enter an exponent to make the RSA encryption")
-       
-    if toVigenere is not None:
-        key = args["vigenereKey"]
-        if key is not None:
-            CodeVigenere(toVigenere,key)
-        else :
-            print("You have to enter en correct key")
 
-    if fromVigenere is not None:
-        key = args["vigenereKey"]
-        if key is not None:
-            DecodeVigenere(fromVigenere,key)
+    flag = args["RsaInFile"]
+    privateK = args["privateKey"]   
+    if flag is not None:
+        if privateK is not None:
+            opensslRsa(flag,privateK)
         else :
-            DecodeVigenereWithoutKey(fromVigenere)
+            print("You have to specify a privateKey")
+
+    dump = args["dump"]
+    if dump is not None:
+        dumpPrivateKey(dump)
+    
+    #If there is no argument specified : launch the help
+    boolean = False
+    for i in args:
+        if args[i] is not None:
+            boolean = True
+
+    if boolean == False:
+        os.system('/usr/bin/python DecrypTool.py -help')
+
+
+#########################################################################################
+#                           TransBase
+#Todo:
+#Make it "smoother", it's actually ugly
+#########################################################################################
 def transBase(transBase) :
 
     if transBase != None:
@@ -107,82 +110,77 @@ def transBase(transBase) :
     print('Le message a convertir : ', s)
     print('Le 0 en resultat signifie soit une valeur impossible, soit la valeur 0','\n')
 
-    #Essaye de convertir en entier
+    #Try to convert in decimal
     try :
         intS = int(s,10)
     except : 
         intS = 0
 
-    print('intS = ' ,intS)
-
-    #Essaye de convertir en octal
+    #Try to convert in octal
     try :
         octToDecimal = int(s,8)
         octS = oct(octToDecimal)
     except :
         octS = oct(0)
-    print('octS = ',octS)
 
-    #Essaye de convertir en biniare
+    #Try to convert in binary
     try : 
         binToIntS = int(s,2)
         binS = bin(binToIntS)
     except :
         binS = bin(0)
-    print('binS = ',binS)
 
-    #Essaye de convertir en hexa
+    #Try to convert in hex
     try : 
         hexToIntS = int(s,16)
         hexS = hex(hexToIntS)
     except :
         hexS = hex(0)
-    print('hexS = ', hexS)
 
 
-    #Si le message de base est en binaire 
+    #If the message is in binary
     print('[~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]','\n')
-    print('Si c\'etait du binaire : ', '\n')
+    print('If the message is in binary : ', '\n')
 
-    print('En binaire : ','\t', binS, '\n')
+    print('In binary : ','\t', binS, '\n')
     binToDecimal = int(binS,2)
 
     binToOctal = oct(binToDecimal)
-    print('En octal : ','\t', binToOctal, '\n')
+    print('In octal : ','\t', binToOctal, '\n')
 
     binToDecimal = int(binS,2)
-    print('En decimal : ' ,'\t', binToDecimal ,'\n')
+    print('In decimal : ' ,'\t', binToDecimal ,'\n')
 
-    print('En hexa : ','\t', hex(binToDecimal),'\n')
+    print('In hexa : ','\t', hex(binToDecimal),'\n')
 
-    #Si le message de base etait en decimal
+    #If the message is in decimal
     print('[~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]', '\n')
-    print('Si le message etait en decimal')
+    print('If the message is in decimal')
 
     decimalToBin = bin(intS)
-    print('En binaire : ','\t',decimalToBin,'\n')
+    print('In binary : ','\t',decimalToBin,'\n')
 
-    print('En octal : ','\t', oct(intS),'\n')
+    print('In octal : ','\t', oct(intS),'\n')
 
-    print('En decimal : ','\t', intS,'\n')
+    print('In decimal : ','\t', intS,'\n')
 
-    print('En hexa : ','\t', hex(intS))
+    print('In hexa : ','\t', hex(intS))
 
     print('[~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]', '\n')
-    print('Si le message etait en hexadecimal')
+    print('If the message is in hexadecimal')
 
     hexaToDecimal = int(hexS, 16)
 
     hexaToBin = int(hexS.lower(), 16)
     hexaToBin = bin(hexaToBin)
-    print('En binaire : ','\t', hexaToBin, '\n')
+    print('In binary : ','\t', hexaToBin, '\n')
 
     hexaToOct = oct(hexaToDecimal)
-    print('En octal : ','\t', hexaToOct,'\n')
+    print('In octal : ','\t', hexaToOct,'\n')
 
-    print('En decimal : ','\t', hexaToDecimal,'\n')
+    print('In decimal : ','\t', hexaToDecimal,'\n')
 
-    print('En hexa : ','\t', hexS, '\n')
+    print('In hexa : ','\t', hexS, '\n')
 
     print('[~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]', '\n')
     print('Si le message etait en octal','\n')
@@ -190,19 +188,21 @@ def transBase(transBase) :
     octalToInt = int(octS,8)
 
     octalToBin = bin(octalToInt)
-    print('En binaire : ','\t',octalToBin,'\n')
+    print('In binary : ','\t',octalToBin,'\n')
 
-    print('En octal : ','\t',octS,'\n')
+    print('In octal : ','\t',octS,'\n')
 
-    print('En decimal : ','\t', octalToInt)
+    print('In decimal : ','\t', octalToInt)
 
     octalToHex = hex(octalToInt)
-    print('En hexa : ','\t', octalToHex, '\n')
+    print('In hexa : ','\t', octalToHex, '\n')
     print('[~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]')
 
 
 ############################################################################################
 #                   Cesar's code
+#Todo:
+#Keep the caps in the final message, actually only in lower case
 ############################################################################################
 def cesar(cesar) :
 
@@ -241,6 +241,9 @@ def codeInBase64(data):
 
 ###########################################################################
 #                       RSA 
+# Todo : 
+# OpenSSL break certifs
+# Crypt with the private key and decrypt with the public
 ###########################################################################
 
 
@@ -252,137 +255,31 @@ def toRSA(message,theModulus,theE):
     cipher = pow(toCipher,e,modulus)
     print(cipher)
 
+def opensslRsa(flag, privkey):
+    os.system('openssl rsautl -decrypt -inkey '+ privkey +' -in '+ flag + ' -out result')
 
-###########################################################################
-#                   Vigenere
-###########################################################################
-
-def DecodeVigenereWithoutKey(message):
-    lengthKey = DecodeVigenereLongueurCle(message)
-    key = DecodeVigenereCle(message,lengthKey)
-    print("The decrypted Vigenere message :",DecodeVigenere(message, key))
-
-def CodeVigenere(message, cle):
-    print("The original message : ",message,"\tThe given key : ",cle,"\tThe cipher : ", code_vigenere(message, cle))
-    
-
-def code_vigenere ( message, cle, decode = False) :
-    message_code = ""
-    for i,c in enumerate(message) :
-        d = cle[ i % len(cle) ]
-        d = ord(d) - 65
-        if decode : d = 26 - d
-        message_code += chr((ord(c)-65+d)%26+65)
-    return message_code
-
-def DecodeVigenere(message, cle):
-    print(code_vigenere(message, cle, True)) 
+def dumpPrivateKey(privkey):
+    os.system('openssl rsa -in '+privkey+' -text -noout')
 
 
-def PGCD (m,n) :
-    if m <= 0 or n <= 0 : raise Exception("impossible de calculer le PGCD")
-    if m == 1 or n == 1 : return 1
-    if m == n : return m
-    if m < n : return PGCD (m, n-m)
-    return PGCD (n, m-n)
+            
 
-def DecodeVigenereLongueurCle (message, mot = 3) :
-    """
-    cette fonction determine la longueur de la clé, elle
-    repère les groupes de trois lettres qui se répète dans le message codé
-    et suppose qu'il y a une très forte probabilité qu'un même groupe de trois
-    lettres soit codé avec les mêmes trois lettres du message et les mêmes trois
-    lettres de la clé
-
-    message  : .....DES...........DES...........DES.........DES....DES
-    cle      : ABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCD
-    code     : .....EGV.........................EGV.........EGV..........
-    distance :      <----------24--------------><----8----->
-
-    la longueur de la clé divise le PGCD de 24 et 8
-    """
-    al = "".join([ chr(97+i) for i in range(0,26) ]) # l'alphabet
-    al = al.upper ()
-
-    # parcours du message pour recenser toutes les positions
-    dico = {}
-    for i in range (0, len (message)-2) :
-        t = message [i:i+mot]
-        if t in dico : dico [t].append (i)
-        else : dico [t] = [i]
-
-    # on va garder toutes les distances entre
-    # entre deux occurrences du meme mot de n lettres
-    dis = []
-    for d in dico :
-        p = dico [d]
-        if len (p) > 1 :
-            for i in range (0, len (p)-1) :
-                #print d, p [i+1] - p [i], " --- ", float (p [i+1] - p [i]) / 8
-                dis.append ( p [i+1] - p [i] )
-
-    # on extrait le PGCD
-    if len (dis) == 0 :
-        raise Exception("impossible de determiner la clé")
-
-    if len (dis) == 1 : return dis [0]
-
-    longueur = PGCD (dis [0], dis [1])
-    for d in dis :
-        longueur = PGCD (longueur, d)
-
-    if longueur > 5 :
-        # si la longueur est suffisante, le resultat a des chances d'etre bon
-        return longueur
-    else :
-        # sinon, on relance l'algorithme avec des mots plus grand
-        return DecodeVigenereLongueurCle (message, mot+1)
+            
 
 
-def DecodeVigenereCle (code, l) :
-    """
-    Détermine la cle du message code, connaissant sa longueur,
-    on suppose que la lettre E est la lettre la plus fréquente
-
-    @param      code        message codé
-    @param      l           longueur probable de la clé
-    @return                 message décodé
-    """
-    al  = "".join([ chr(97+i) for i in range(0,26) ])
-    al  = al.upper ()
-    cle = ""
-    for i in range (0, l) :
-        nombre = [ 0 for a in al]
-        sous   = code [i:len (code):l]  # on extrait toutes les lettres
-                                        # i, i+l, i+2l; i+3l, ...
-
-        # on compte les lettres
-        for k in sous : nombre [ al.find (k) ] += 1
-
-        # on cherche le maximum
-        p = 0
-        for k in range (0, len (nombre)) :
-            if nombre [k] > nombre [p] : p = k
-
-        # on suppose que al [p] est la lettre E code,
-        # il ne reste plus qu'a trouver la lettre de la cle
-        # qui a permis de coder E en al [p]
-        cle += al [ (p + 26 - al.find ("E")) % 26 ]
-
-    return cle
 
 
 
 def banner() :
-    print("""
-  ____                           _____           _ 
- |  _ \  ___  ___ _ __ _   _ _ _|_   _|__   ___ | |
- | | | |/ _ \/ __| '__| | | | '_ \| |/ _ \ / _ \| |
- | |_| |  __/ (__| |  | |_| | |_) | | (_) | (_) | |
- |____/ \___|\___|_|   \__, | .__/|_|\___/ \___/|_|
-                       |___/|_|                    
+    print("""\t
+\t\t  ____                           _____           _ 
+\t\t |  _ \  ___  ___ _ __ _   _ _ _|_   _|__   ___ | |
+\t\t | | | |/ _ \/ __| '__| | | | '_ \| |/ _ \ / _ \| |
+\t\t | |_| |  __/ (__| |  | |_| | |_) | | (_) | (_) | |
+\t\t |____/ \___|\___|_|   \__, | .__/|_|\___/ \___/|_|
+\t\t                       |___/|_|                    
     """)
-    print('\n\t\t',"Welcome to DecrypTool\n\n\n")
+    print('\n\t\t',"Welcome to DecrypTool, let's decrypt something !\n\n\n")
 
 
 if __name__ == '__main__' :
