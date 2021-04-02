@@ -43,7 +43,7 @@ I used python to make this tool, you will need the following extensions :
 `python3 ./DecrypTool.py -c "Your sentence"`
 
 ### The base transposition mode : <br>
-`python3 ./DecrypTool.py -t "You value"`
+`python3 ./DecrypTool.py -toBinary "Your value" --from "The base that the value come from"`
 
 ### The RSA mode:<br>
 #### To encrypt :<bR>
@@ -55,4 +55,4 @@ I used python to make this tool, you will need the following extensions :
 # Upcoming
 * AES encryption / decryption.
 * RSA encryption with private key and cracking with public key.
-* Make the base transposition prettiest.
+* Test all the possiblities if a base for transposition isn't specified

@@ -8,17 +8,22 @@ def main() :
     parser = argparse.ArgumentParser(description=("Decrypt Everything !"))
 
     #Args for cesar
-    parser.add_argument('-c','--cesar',nargs= 1 , help='The sentence to decipher', required=False)
+    parser.add_argument('-c','--cesar', help='The sentence to decipher')
 
     #Args for Transbase
-    parser.add_argument('-t', '--transBase', nargs=1, help='The "move to another base" mode ', required=False)
+    parser.add_argument('--toDecimal', help='To convert the value in decimal')
+    parser.add_argument('--toOctal', help='To convert the value in octal')
+    parser.add_argument('--toBinary', help='To convert the value in binary')
+    parser.add_argument('--toHex', help='To convert the value in hex')
+    parser.add_argument('--from', help='The base that the value come from : "hex", "binary", "octal", "decimal"')
+
 
     #Args for xor
-    parser.add_argument('-x','--xor', nargs=1, help='The unXOR mode', required=False)
+    parser.add_argument('-x','--xor', help='The unXOR mode')
 
     #Args for Base64
-    parser.add_argument('--base64',nargs=1,help='The sentence to decrypt from base64', required=False)
-    parser.add_argument('--toBase64',nargs=1,help='The sentence to encrypt in base64', required=False)
+    parser.add_argument('--base64',help='The sentence to decrypt from base64')
+    parser.add_argument('--toBase64',help='The sentence to encrypt in base64')
 
     #Args fir RSA
     parser.add_argument("--toRsa", help="Activates the RSA mode")
@@ -34,31 +39,32 @@ def main() :
     args = parser.parse_args()
     args = vars(args)
 
-    toCesar = args["cesar"]
-    toTransBase = args["transBase"]
-    toXor = args["xor"]
-    fromBase64 = args["base64"]
-    toBase64 = args["toBase64"]
-
-    toRsa = args["toRsa"]
-
     banner()
-    if toCesar !=  None:
-        cesar(toCesar)
+    if args["toDecimal"] is not None and args["from"] is not None:
+        toDecimal(args["toDecimal"],args["from"])
+
+    if args["toHex"] is not None and args["from"] is not None:
+        toDecimal(args["toHex"],args["from"])
+
+    if args["toOctal"] is not None and args["from"] is not None:
+        toDecimal(args["toOctal"],args["from"])
     
-    if toTransBase != None :
-        transBase(toTransBase)
-    
-    if toXor != None :
-        xor(toXor)
+    if args["toBinary"] is not None and args["from"] is not None:
+        toDecimal(args["toBinary"],args["from"])
 
-    if fromBase64 != None:
-        unBase64(fromBase64)
+    if args["cesar"] !=  None:
+        cesar(args["cesar"])
+        
+    if args["xor"] != None :
+        xor(args["xor"])
 
-    if toBase64 != None:
-        codeInBase64(toBase64)
+    if args["base64"] != None:
+        unBase64(args["base64"])
 
-    if toRsa != None:
+    if args["toBase64"] != None:
+        codeInBase64(args["toBase64"])
+
+    if args["toRsa"] != None:
         p = args["p"]
         q = args["q"]
         n = args["n"]
@@ -67,9 +73,9 @@ def main() :
 
         if e is not None :
             if p is not None and q is not None:
-                toRSA(toRsa,e,p*q)
+                toRSA(args["toRsa"],e,p*q)
             elif n is not None :
-                toRSA(toRsa,e,n)
+                toRSA(args["toRsa"],e,n)
             else:
                 print("You have to enter a modulus or a couple of prim numbers")
         else:
@@ -102,102 +108,93 @@ def main() :
 #Todo:
 #Make it "smoother", it's actually ugly
 #########################################################################################
-def transBase(transBase) :
+def toBinary(value,fromBase):
+    fromBase = fromBase.lower()
+    if(fromBase == "decimal"):
+        try:
+            print(bin(value))
+        except :
+            print("It wasn't in decimal, try with another base")
 
-    if transBase != None:
-        s = transBase[0]
-    else : s =0 
-    print('Le message a convertir : ', s)
-    print('Le 0 en resultat signifie soit une valeur impossible, soit la valeur 0','\n')
+    if(fromBase == "hexadecimal"):
+        try:
+            valueHex = int(value, 16)
+            hexaToBin = bin(hexaToBin)
+            print(hexaToBin)
+        except :
+            print("It wasn't in hexadecimal, try with another base")
 
-    #Try to convert in decimal
-    try :
-        intS = int(s,10)
-    except : 
-        intS = 0
+    if(fromBase == "octal"):
+        try:
+            valueOct = int(value,8)
+            print(bin(valueOct))
+        except :
+            print("It wasn't in octal, try with another base")
 
-    #Try to convert in octal
-    try :
-        octToDecimal = int(s,8)
-        octS = oct(octToDecimal)
-    except :
-        octS = oct(0)
+def toDecimal(value,fromBase):
+    fromBase = fromBase.lower()
+    if(fromBase == "binary"):
+        try:
+            print(int(value,2))
+        except :
+            print("It wasn't in binary, try with another base")
 
-    #Try to convert in binary
-    try : 
-        binToIntS = int(s,2)
-        binS = bin(binToIntS)
-    except :
-        binS = bin(0)
+    if(fromBase == "hexadecimal"):
+        try:
+            valueHex = int(value, 16)
+            print(valueHex)
+        except :
+            print("It wasn't in hexadecimal, try with another base")
 
-    #Try to convert in hex
-    try : 
-        hexToIntS = int(s,16)
-        hexS = hex(hexToIntS)
-    except :
-        hexS = hex(0)
+    if(fromBase == "octal"):
+        try:
+            valueOct = int(value,8)
+            print(valueOct)
+        except :
+            print("It wasn't in octal, try with another base")
+    
+def toHex(value,fromBase):
+    fromBase = fromBase.lower()
+    if(fromBase == "binary"):
+        try:
+            print(hex(int(value,2)))
+        except :
+            print("It wasn't in binary, try with another base")
 
+    if(fromBase == "decimal"):
+        try:
+            print(hex(value))
+        except :
+            print("It wasn't in decimal, try with another base")
 
-    #If the message is in binary
-    print('[~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]','\n')
-    print('If the message is in binary : ', '\n')
+    if(fromBase == "octal"):
+        try:
+            valueOct = int(value,8)
+            print(hex(valueOct))
+        except :
+            print("It wasn't in octal, try with another base")
 
-    print('In binary : ','\t', binS, '\n')
-    binToDecimal = int(binS,2)
+def toOctal(value,fromBase):
+    fromBase = fromBase.lower()
+    if(fromBase == "binary"):
+        try:
+            o = int(value,2)
+            print(oct(o))
+        except :
+            print("It wasn't in binary, try with another base")
 
-    binToOctal = oct(binToDecimal)
-    print('In octal : ','\t', binToOctal, '\n')
+    if(fromBase == "decimal"):
+        try:
+            print(oct(value))
+        except :
+            print("It wasn't in hexadecimal, try with another base")
 
-    binToDecimal = int(binS,2)
-    print('In decimal : ' ,'\t', binToDecimal ,'\n')
-
-    print('In hexa : ','\t', hex(binToDecimal),'\n')
-
-    #If the message is in decimal
-    print('[~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]', '\n')
-    print('If the message is in decimal')
-
-    decimalToBin = bin(intS)
-    print('In binary : ','\t',decimalToBin,'\n')
-
-    print('In octal : ','\t', oct(intS),'\n')
-
-    print('In decimal : ','\t', intS,'\n')
-
-    print('In hexa : ','\t', hex(intS))
-
-    print('[~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]', '\n')
-    print('If the message is in hexadecimal')
-
-    hexaToDecimal = int(hexS, 16)
-
-    hexaToBin = int(hexS.lower(), 16)
-    hexaToBin = bin(hexaToBin)
-    print('In binary : ','\t', hexaToBin, '\n')
-
-    hexaToOct = oct(hexaToDecimal)
-    print('In octal : ','\t', hexaToOct,'\n')
-
-    print('In decimal : ','\t', hexaToDecimal,'\n')
-
-    print('In hexa : ','\t', hexS, '\n')
-
-    print('[~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]', '\n')
-    print('Si le message etait en octal','\n')
-
-    octalToInt = int(octS,8)
-
-    octalToBin = bin(octalToInt)
-    print('In binary : ','\t',octalToBin,'\n')
-
-    print('In octal : ','\t',octS,'\n')
-
-    print('In decimal : ','\t', octalToInt)
-
-    octalToHex = hex(octalToInt)
-    print('In hexa : ','\t', octalToHex, '\n')
-    print('[~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]')
-
+    if(fromBase == "hexadecimal"):
+        try:
+            o = int(value,16)
+            print(oct(o))
+        except :
+            print("It wasn't in octal, try with another base")
 
 ############################################################################################
 #                   Cesar's code
