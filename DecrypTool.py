@@ -1,7 +1,6 @@
 import argparse
 import base64
 import os
-
 def main() :
 
 
@@ -54,7 +53,7 @@ def main() :
 
     if args["cesar"] !=  None:
         cesar(args["cesar"])
-        
+
     if args["xor"] != None :
         xor(args["xor"])
 
@@ -206,7 +205,7 @@ def cesar(cesar) :
     print("The 26 possibilities :")
     liste_lettre=["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]
 
-    phrase=cesar[0]
+    phrase=cesar
     print(phrase)
 
     phrase_decodee=[]
