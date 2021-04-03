@@ -43,13 +43,13 @@ def main() :
         toDecimal(args["toDecimal"],args["from"])
 
     if args["toHex"] is not None and args["from"] is not None:
-        toDecimal(args["toHex"],args["from"])
+        toHex(args["toHex"],args["from"])
 
     if args["toOctal"] is not None and args["from"] is not None:
-        toDecimal(args["toOctal"],args["from"])
+        toOctal(args["toOctal"],args["from"])
     
     if args["toBinary"] is not None and args["from"] is not None:
-        toDecimal(args["toBinary"],args["from"])
+        toBinary(args["toBinary"],args["from"])
 
     if args["cesar"] !=  None:
         cesar(args["cesar"])
@@ -108,6 +108,7 @@ def main() :
 #Make it "smoother", it's actually ugly
 #########################################################################################
 def toBinary(value,fromBase):
+    value = value[0]
     fromBase = fromBase.lower()
     if(fromBase == "decimal"):
         try:
@@ -118,7 +119,7 @@ def toBinary(value,fromBase):
     if(fromBase == "hexadecimal"):
         try:
             valueHex = int(value, 16)
-            hexaToBin = bin(hexaToBin)
+            hexaToBin = bin(valueHex)
             print(hexaToBin)
         except :
             print("It wasn't in hexadecimal, try with another base")
@@ -197,32 +198,38 @@ def toOctal(value,fromBase):
 
 ############################################################################################
 #                   Cesar's code
-#Todo:
-#Keep the caps in the final message, actually only in lower case
 ############################################################################################
 def cesar(cesar) :
 
     print("The 26 possibilities :")
     liste_lettre=["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]
+    maj = ["A","B","C","D","E","F","G","H","i","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
 
     phrase=cesar
     print(phrase)
 
     phrase_decodee=[]
-    phrase = phrase.lower()
     phrase=phrase.split()
     for pas in range (26) :
         for mot in phrase:
             liste_mot=[]
             for lettre in mot:
-                i=liste_lettre.index(lettre)
-                if i+pas>25:
-                    i-=26
-                liste_mot.append(liste_lettre[i+pas])
+                if lettre in liste_lettre:
+                    i=liste_lettre.index(lettre)
+                    if i+pas>25:
+                        i-=26
+                    liste_mot.append(liste_lettre[i+pas])
+                elif lettre in maj:
+                    i=maj.index(lettre)
+                    if i+pas>25:
+                        i-=26
+                    liste_mot.append(maj[i+pas])
+                else :
+                    liste_mot.append(lettre)
             phrase_decodee.append("".join(liste_mot))
         print(pas,"\t|"," ".join(phrase_decodee),"|")
         phrase_decodee = []
-
+    
 def xor(xor) :
     print('*unXOR code*')
 
@@ -256,14 +263,6 @@ def opensslRsa(flag, privkey):
 
 def dumpPrivateKey(privkey):
     os.system('openssl rsa -in '+privkey+' -text -noout')
-
-
-            
-
-            
-
-
-
 
 
 def banner() :

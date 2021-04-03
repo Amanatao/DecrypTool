@@ -56,3 +56,4 @@ I used python to make this tool, you will need the following extensions :
 * AES encryption / decryption.
 * RSA encryption with private key and cracking with public key.
 * Test all the possiblities if a base for transposition isn't specified
+* A website ! For the windows user that wants to use my code !
