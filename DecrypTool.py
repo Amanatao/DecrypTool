@@ -104,19 +104,17 @@ def main() :
 
 #########################################################################################
 #                           TransBase
-#Todo:
-#Make it "smoother", it's actually ugly
 #########################################################################################
 def toBinary(value,fromBase):
-    value = value[0]
     fromBase = fromBase.lower()
     if(fromBase == "decimal"):
         try:
+            value = int(value)
             print(bin(value))
         except :
             print("It wasn't in decimal, try with another base")
 
-    if(fromBase == "hexadecimal"):
+    if(fromBase == "hexadecimal" or "hex"):
         try:
             valueHex = int(value, 16)
             hexaToBin = bin(valueHex)
@@ -139,7 +137,7 @@ def toDecimal(value,fromBase):
         except :
             print("It wasn't in binary, try with another base")
 
-    if(fromBase == "hexadecimal"):
+    if(fromBase == "hexadecimal" or "hex"):
         try:
             valueHex = int(value, 16)
             print(valueHex)
@@ -163,6 +161,7 @@ def toHex(value,fromBase):
 
     if(fromBase == "decimal"):
         try:
+            value = int(value)
             print(hex(value))
         except :
             print("It wasn't in decimal, try with another base")
@@ -185,11 +184,12 @@ def toOctal(value,fromBase):
 
     if(fromBase == "decimal"):
         try:
+            value = int(value)
             print(oct(value))
         except :
             print("It wasn't in hexadecimal, try with another base")
 
-    if(fromBase == "hexadecimal"):
+    if(fromBase == "hexadecimal" or "hex"):
         try:
             o = int(value,16)
             print(oct(o))
@@ -259,7 +259,7 @@ def toRSA(message,theModulus,theE):
     print(cipher)
 
 def opensslRsa(flag, privkey):
-    os.system('openssl rsautl -decrypt -inkey '+ privkey +' -in '+ flag + ' -out result')
+    os.system('openssl rsautl -decrypt -inkey '+ privkey +' -in '+ flag)
 
 def dumpPrivateKey(privkey):
     os.system('openssl rsa -in '+privkey+' -text -noout')
