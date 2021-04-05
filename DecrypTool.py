@@ -25,14 +25,15 @@ def main() :
     parser.add_argument('--toBase64',help='The sentence to encrypt in base64')
 
     #Args fir RSA
-    parser.add_argument("--toRsa", help="Activates the RSA mode")
+    parser.add_argument("--toRsa", help="The file that you want to encrypt in Rsa")
     parser.add_argument("-n", help="Specify the modulus. format : int or 0xhex")
     parser.add_argument("-p", help="Specify the first prime number. format : int or 0xhex")
     parser.add_argument("-q", help="Specify the second prime number. format : int or 0xhex")
     parser.add_argument("-e", help="Specify the public exponent. format : int or 0xhex")
     parser.add_argument("--privateKey", help="The private key in a file")
     parser.add_argument("--RsaInFile", help="The flag encrypted in a file")
-    parser.add_argument("--dump", help="Dump the private key")
+    parser.add_argument("--dumpPrivateKey", help="Dump the private key")
+    parser.add_argument("--dumpPublicKey", help="Dump the private key")
 
 
     args = parser.parse_args()
@@ -64,33 +65,21 @@ def main() :
         codeInBase64(args["toBase64"])
 
     if args["toRsa"] != None:
-        p = args["p"]
-        q = args["q"]
-        n = args["n"]
-        e = args["e"]
-        
-
-        if e is not None :
-            if p is not None and q is not None:
-                toRSA(args["toRsa"],e,p*q)
-            elif n is not None :
-                toRSA(args["toRsa"],e,n)
-            else:
-                print("You have to enter a modulus or a couple of prim numbers")
-        else:
-            print("You have to enter an exponent to make the RSA encryption")
+        encryptInRsa(args["toRsa"])
 
     flag = args["RsaInFile"]
     privateK = args["privateKey"]   
     if flag is not None:
         if privateK is not None:
-            opensslRsa(flag,privateK)
+            decryptRsa(flag,privateK)
         else :
             print("You have to specify a privateKey")
 
-    dump = args["dump"]
-    if dump is not None:
-        dumpPrivateKey(dump)
+    if args["dumpPrivateKey"] is not None:
+        dumpPrivateKey(args["dumpPrivateKey"])
+
+    if args["dumpPublicKey"] is not None:
+        dumpPublicKey(args["dumpPublicKey"])
     
     #If there is no argument specified : launch the help
     boolean = False
@@ -204,6 +193,7 @@ def cesar(cesar) :
     print("The 26 possibilities :")
     liste_lettre=["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]
     maj = ["A","B","C","D","E","F","G","H","i","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
+    liste_possible = ["ab","ac","ad","ae","af","ag","a"]
 
     phrase=cesar
     print(phrase)
@@ -246,24 +236,32 @@ def codeInBase64(data):
 #                       RSA 
 # Todo : 
 # OpenSSL break certifs
-# Crypt with the private key and decrypt with the public
+# Crypt with the private key and decrypt with the public                   
 ###########################################################################
 
-
-def toRSA(message,theModulus,theE):
-    toCipher = message[0]
-    modulus = theModulus[0]
-    e = theE[0]
-
-    cipher = pow(toCipher,e,modulus)
-    print(cipher)
-
-def opensslRsa(flag, privkey):
+def decryptRsa(flag, privkey):
     os.system('openssl rsautl -decrypt -inkey '+ privkey +' -in '+ flag)
 
 def dumpPrivateKey(privkey):
     os.system('openssl rsa -in '+privkey+' -text -noout')
 
+def dumpPublicKey(publikey):
+    os.system('openssl rsa -pubin -inform PEM -text -noout < '+publikey +' > resultDumpPubKey')
+
+def RsaDecryptWithPubKey(file,publikey):
+    os.system('openssl rsa -pubin -inform PEM -text -noout < '+publikey +' > resultDumpPubKey')
+    f = open("resultDumpPubKey","r")
+    print(f.read())
+
+def generateKeys():
+    os.system('openssl genrsa -out privateKey.pem')
+    os.system('openssl rsa -in privateKey.pem -pubout -out publicKey.pem')
+    print("Don't let anyone see your private key !")
+
+def encryptInRsa(file):
+    generateKeys()
+    os.system('openssl rsautl -encrypt -in '+file+' -inkey publicKey.pem -pubin -out ' + file+".enc")
+    print("Now you have 3 files, the public key, the private one and your file encrypted")
 
 def banner() :
     print("""\t
