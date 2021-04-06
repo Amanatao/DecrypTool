@@ -9,11 +9,11 @@
 * [Upcoming](#upcoming)
 
 # __General info__
-It's a project built buy a 1st year student in IT.<br>
-This programm has been made to make the cryptography easier for beginers. It as one objective :
+It is a project built by a 1st year student in IT.<br>
+This programm has been made to make cryptography easier for beginners. It has one objective :
 **Make your ctf faster**<br>
 I will regulary add new scripts and types of encryption / decryption.
-Actually, DecrypTool has :
+To date, DecrypTool has :
 * Cesar bruteforce
 * Base transposition : 
     * Binary
@@ -36,7 +36,7 @@ I used python to make this tool, you will need the following extensions :
 ## To run this script :
 ```
 git clone https://github.com/Amanatao/DecrypTool<br>
-pip3 install -r "requierment.txt"<br>
+pip3 install -r "requirement.txt"<br>
 python3 DecrypTool.py
 ```
 
@@ -65,4 +65,4 @@ With a private key:<br>
 * AES encryption / decryption.
 * RSA cracking with public key.
 * Test all the possiblities if a base for transposition isn't specified
-* A website ! For the windows user that wants to use my code !
+* A website ! For the windows user who want to use my code !
