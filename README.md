@@ -10,9 +10,9 @@
 
 # __General info__
 It is a project built by a 1st year student in IT.<br>
-This programm has been made to make cryptography easier for beginners. It has one objective :
+This program has been created to make cryptography easier for beginners. It has one objective :
 **Make your ctf faster**<br>
-I will regulary add new scripts and types of encryption / decryption.
+I will regularly add new scripts and types of encryption / decryption.
 To date, DecrypTool has :
 * Cesar bruteforce
 * Base transposition : 
