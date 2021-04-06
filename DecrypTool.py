@@ -25,15 +25,16 @@ def main() :
     parser.add_argument('--toBase64',help='The sentence to encrypt in base64')
 
     #Args fir RSA
-    parser.add_argument("--toRsa", help="The file that you want to encrypt in Rsa")
-    parser.add_argument("-n", help="Specify the modulus. format : int or 0xhex")
-    parser.add_argument("-p", help="Specify the first prime number. format : int or 0xhex")
-    parser.add_argument("-q", help="Specify the second prime number. format : int or 0xhex")
-    parser.add_argument("-e", help="Specify the public exponent. format : int or 0xhex")
+    parser.add_argument("--toRsa", help="The file that you want to encrypt in Rsa with a public key or private key already created or create et pair of keys")
+    parser.add_argument("-n", help="Specify the modulus.")
+    parser.add_argument("-p", help="Specify the first prime number.")
+    parser.add_argument("-q", help="Specify the second prime number.")
+    parser.add_argument("-e", help="Specify the public exponent.")
     parser.add_argument("--privateKey", help="The private key in a file")
     parser.add_argument("--RsaInFile", help="The flag encrypted in a file")
     parser.add_argument("--dumpPrivateKey", help="Dump the private key")
     parser.add_argument("--dumpPublicKey", help="Dump the private key")
+    parser.add_argument("--genKeys", help="Generates a pair of keys")
 
 
     args = parser.parse_args()
@@ -65,7 +66,8 @@ def main() :
         codeInBase64(args["toBase64"])
 
     if args["toRsa"] != None:
-        encryptInRsa(args["toRsa"])
+        encryptInRsa(args["toRsa"],args["publicKey"],args["privateKey"])
+    
 
     flag = args["RsaInFile"]
     privateK = args["privateKey"]   
@@ -80,6 +82,9 @@ def main() :
 
     if args["dumpPublicKey"] is not None:
         dumpPublicKey(args["dumpPublicKey"])
+    
+    if args["genKeys"] is not None :
+        generateKeys()
     
     #If there is no argument specified : launch the help
     boolean = False
@@ -193,7 +198,7 @@ def cesar(cesar) :
     print("The 26 possibilities :")
     liste_lettre=["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]
     maj = ["A","B","C","D","E","F","G","H","i","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
-    liste_possible = ["ab","ac","ad","ae","af","ag","a"]
+    liste_possible = ["ab","ac","ad","ae","af","ag","ah","ai","aj","ak"]
 
     phrase=cesar
     print(phrase)
@@ -258,10 +263,21 @@ def generateKeys():
     os.system('openssl rsa -in privateKey.pem -pubout -out publicKey.pem')
     print("Don't let anyone see your private key !")
 
-def encryptInRsa(file):
-    generateKeys()
-    os.system('openssl rsautl -encrypt -in '+file+' -inkey publicKey.pem -pubin -out ' + file+".enc")
-    print("Now you have 3 files, the public key, the private one and your file encrypted")
+def encryptInRsa(file,publicKey,privateKey):
+    if publicKey != None:
+        os.system('openssl rsautl -encrypt -in '+file+' -inkey '+publicKey+' -pubin -out ' + file+'.enc')
+        print("You have encrypted your file with your public key")
+
+    if privateKey != None:
+        os.system('openssl rsautl -encrypt -in '+file+' -inkey '+privateKey+' -out ' + file+'.enc')
+        print("You have encrypted your file with your private key")
+    else :
+        generateKeys()
+        os.system('openssl rsautl -encrypt -in '+file+' -inkey publicKey.pem -pubin -out ' + file+".enc')
+        print("Now you have 3 files, the public key, the private one and your file encrypted")
+
+
+
 
 def banner() :
     print("""\t
