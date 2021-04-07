@@ -273,7 +273,7 @@ def encryptInRsa(file,publicKey,privateKey):
         print("You have encrypted your file with your private key")
     else :
         generateKeys()
-        os.system('openssl rsautl -encrypt -in '+file+' -inkey publicKey.pem -pubin -out ' + file+".enc')
+        os.system('openssl rsautl -encrypt -in '+file+' -inkey publicKey.pem -pubin -out ' + file+'.enc')
         print("Now you have 3 files, the public key, the private one and your file encrypted")
 
 
