@@ -1,7 +1,5 @@
 import gmpy2
 import math
-
-
 def privatekey_check(N, p, q, d, e):
     ret = False
     txt = ""

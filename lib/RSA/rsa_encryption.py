@@ -1,7 +1,7 @@
 import os
 import base64
 from Crypto.PublicKey import RSA
-from lib.keys_wrapper import generate_pq_from_n_and_p_or_q, generate_keys_from_p_q_e_n, PrivateKey
+from lib.RSA.keys_wrapper import generate_pq_from_n_and_p_or_q, generate_keys_from_p_q_e_n, PrivateKey
 
 def generateKeysFromValues(n,e,p,q):
     if n and (p or q):

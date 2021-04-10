@@ -7,10 +7,10 @@ import binascii
 import subprocess
 from Crypto.PublicKey import RSA
 from Crypto.Cipher import PKCS1_OAEP
-from lib.rsalibnum import invmod
+from lib.RSA.rsalibnum import invmod
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.backends import default_backend
-from lib.conspicuous_check import privatekey_check
+from lib.RSA.conspicuous_check import privatekey_check
 
 logger = logging.getLogger("global_logger")
 

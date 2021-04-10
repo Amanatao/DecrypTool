@@ -9,17 +9,17 @@ from lib.transbase import (
     fromBase64,
     toBase64,
 )
-from lib.rsa_decryption import(
+from lib.RSA.rsa_decryption import(
     RsaDecryptWithPrivKey,
     RsaDecryptWithPubKey,
     dumpKey,
 )
-from lib.rsa_encryption import (
+from lib.RSA.rsa_encryption import (
     generateKeys,
     generateKeysFromValues,
     encryptInRsa,
 )
-from lib.keys_wrapper import generate_pq_from_n_and_p_or_q, generate_keys_from_p_q_e_n, PrivateKey
+from lib.RSA.keys_wrapper import generate_pq_from_n_and_p_or_q, generate_keys_from_p_q_e_n, PrivateKey
 from lib.substitution import cesar
 #from lib.rsa_attack import RSAAttack
 
@@ -100,7 +100,7 @@ def main() :
     #If there is no argument specified : launch the help
     boolean = False
     for i in args:
-        if args[i] is not None or :
+        if args[i] is not None  :
             boolean = True
 
     if boolean == False:
