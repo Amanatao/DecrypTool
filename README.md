@@ -1,5 +1,8 @@
 # DecrypTool
-### A tool which decrypt everything
+### A tool which decrypt everything<br><br>
+
+# Legal disclamer
+Usage of DecrypTool for attacking targets without prior mutual consent is illegal. It is the end user's responsibility to obey all applicable local, state and federal laws. Developers assume no liability and are not responsible for any misuse or damage caused by this program.
 
 # __Table of content__
 * [General info](#general-info)
