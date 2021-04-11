@@ -16,6 +16,7 @@ It is a project built by a 1st year student in IT.<br>
 This program has been created to make cryptography easier for beginners. It has one objective :
 **Make your ctf faster**<br>
 I will regularly add new scripts and types of encryption / decryption.
+I'm using a part of RsaCtfTool to perform the attacks, but all the other features are handmade.<br>
 To date, DecrypTool has :
 * Cesar bruteforce
 * Base transposition : 
